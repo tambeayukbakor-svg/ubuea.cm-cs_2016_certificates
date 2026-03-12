@@ -13,50 +13,57 @@
 
 <script>
 
+const resultDiv = document.getElementById("result");
+
 const params = new URLSearchParams(window.location.search);
-const certID = params.get("id");
+let certID = params.get("id");
 
-if(!certID){
-document.getElementById("result").innerHTML = "No certificate ID provided.";
-return;
+if (!certID) {
+    resultDiv.innerHTML = "No certificate ID provided.";
+} else {
+
+    certID = certID.trim().replace(/-/g,"_");
+
+    fetch("certificates.json")
+    .then(response => response.json())
+    .then(data => {
+
+        const cert = data[certID];
+
+        if (cert) {
+
+            resultDiv.innerHTML =
+            "<h3 style='color:green'>VALID CERTIFICATE</h3>" +
+            "<b>Name:</b> " + cert.name + "<br>" +
+            "<b>Date of Birth:</b> " + cert.d_o_b + "<br>" +
+            "<b>Place of Birth:</b> " + cert.p_o_b + "<br><br>" +
+
+            "<b>University:</b> " + cert.school + "<br>" +
+            "<b>Faculty:</b> " + cert.faculty + "<br>" +
+            "<b>Department:</b> " + cert.department + "<br>" +
+
+            "<b>Degree:</b> " + cert.degree + "<br>" +
+            "<b>Classification:</b> " + cert.grade + "<br>" +
+
+            "<b>Graduation Year:</b> " + cert.graduation_year + "<br>" +
+            "<b>Date Awarded:</b> " + cert.effective_date_of_award;
+
+        } else {
+
+            resultDiv.innerHTML =
+            "<h3 style='color:red'>INVALID CERTIFICATE</h3>";
+
+        }
+
+    })
+    .catch(err => {
+
+        console.error(err);
+        resultDiv.innerHTML = "Error loading certificate database.";
+
+    });
+
 }
-
-const cleanID = certID.trim().replace(/-/g,"_");
-
-fetch("certificates.json")
-.then(response => response.json())
-.then(data => {
-
-if(data[cleanID]){
-
-document.getElementById("result").innerHTML =
-"<h3 style='color:green'>VALID CERTIFICATE</h3>" +
-"<b>Name:</b> " + data[cleanID].name + "<br>" +
-"<b>Date of Birth:</b> " + data[cleanID].d_o_b + "<br>" +
-"<b>Place of Birth:</b> " + data[cleanID].p_o_b + "<br><br>" +
-
-"<b>University:</b> " + data[cleanID].school + "<br>" +
-"<b>Faculty:</b> " + data[cleanID].faculty + "<br>" +
-"<b>Department:</b> " + data[cleanID].department + "<br>" +
-
-"<b>Degree:</b> " + data[cleanID].degree + "<br>" +
-"<b>Classification:</b> " + data[cleanID].grade + "<br>" +
-
-"<b>Graduation Year:</b> " + data[cleanID].graduation_year + "<br>" +
-"<b>Date Awarded:</b> " + data[cleanID].effective_date_of_award;
-
-}else{
-
-document.getElementById("result").innerHTML =
-"<h3 style='color:red'>INVALID CERTIFICATE</h3>";
-
-}
-
-})
-.catch(error => {
-document.getElementById("result").innerHTML = "Error loading certificate data.";
-console.error(error);
-});
 
 </script>
 
