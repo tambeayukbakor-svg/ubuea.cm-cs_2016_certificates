@@ -21,7 +21,7 @@ document.getElementById("result").innerHTML = "No certificate ID provided.";
 return;
 }
 
-const cleanID = certID.trim();
+const cleanID = certID.trim().replace(/-/g,"_");
 
 fetch("certificates.json")
 .then(response => response.json())
