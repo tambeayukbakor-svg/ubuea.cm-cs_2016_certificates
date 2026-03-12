@@ -6,5 +6,42 @@
 </head>
 <body>
 
+<h2>University of Buea</h2>
+<h3>Certificate Verification Portal</h3>
+
+<div id="result">Checking certificate...</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+const certID = params.get("id");
+
+if(!certID){
+document.getElementById("result").innerHTML = "No certificate ID provided.";
+}
+
+fetch("certificates.json")
+.then(response => response.json())
+.then(data => {
+
+if(data[certID]){
+
+document.getElementById("result").innerHTML =
+"<h3 style='color:green'>VALID CERTIFICATE</h3>" +
+"Name: " + data[certID].name + "<br>" +
+"Program: " + data[certID].course + "<br>" +
+"Date: " + data[certID].date;
+
+}else{
+
+document.getElementById("result").innerHTML =
+"<h3 style='color:red'>INVALID CERTIFICATE</h3>";
+
+}
+
+});
+
+</script>
 </body>
 </html>
+
