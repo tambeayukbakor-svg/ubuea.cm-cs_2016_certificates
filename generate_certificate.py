@@ -1,7 +1,7 @@
 import qrcode
 import json
 
-BASE_URL = "https://tambeayukbakor-svg.github.io/ubuea.cm-cs_2016_certificates/index.html?id="
+BASE_URL = "https://tambeayukbakor-svg.github.io/ubuea.cm-cs_2016_certificates/?id=CERT_23_16_0021625"
 
 with open("certificates.json") as f:
     certificates = json.load(f)
