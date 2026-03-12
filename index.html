@@ -1,72 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>BTech Computer Engineering || University of Buea</title>
+
+<meta charset="UTF-8">
+
+<title>University of Buea Certificate Verification</title>
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+background:#f5f7fb;
+margin:0;
+padding:0;
+}
+
+.header{
+background:#002147;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+.container{
+max-width:700px;
+margin:40px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.search-box{
+text-align:center;
+margin-bottom:20px;
+}
+
+input{
+padding:10px;
+width:60%;
+font-size:16px;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+button{
+padding:10px 20px;
+font-size:16px;
+background:#002147;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#004080;
+}
+
+.valid{
+color:green;
+font-weight:bold;
+font-size:20px;
+}
+
+.invalid{
+color:red;
+font-weight:bold;
+font-size:20px;
+}
+
+.cert-info{
+margin-top:20px;
+line-height:1.7;
+}
+
+.footer{
+text-align:center;
+margin-top:40px;
+font-size:13px;
+color:#777;
+}
+
+</style>
+
 </head>
+
+
 <body>
 
-<h2>University of Buea</h2>
+<div class="header">
+
+<h1>University of Buea</h1>
 <h3>Certificate Verification Portal</h3>
 
-<div id="result">Checking certificate...</div>
+</div>
+
+
+<div class="container">
+
+<div class="search-box">
+
+<input id="certInput" placeholder="Enter Certificate ID">
+<button onclick="verifyCertificate()">Verify</button>
+
+</div>
+
+<div id="result">Enter a certificate ID or scan QR code.</div>
+
+</div>
+
+
+<div class="footer">
+
+University of Buea – Official Digital Credential Verification System
+
+</div>
+
+
 
 <script>
 
+function verifyCertificate(){
+
 const resultDiv = document.getElementById("result");
 
-const params = new URLSearchParams(window.location.search);
-let certID = params.get("id");
+let certID = document.getElementById("certInput").value;
 
-if (!certID) {
-    resultDiv.innerHTML = "No certificate ID provided.";
-} else {
+if(!certID){
 
-    certID = certID.trim().replace(/-/g,"_");
+resultDiv.innerHTML="Please enter a certificate ID.";
 
-    fetch("certificates.json")
-    .then(response => response.json())
-    .then(data => {
+return;
 
-        const cert = data[certID];
+}
 
-        if (cert) {
+certID = certID.trim().replace(/-/g,"_");
 
-            resultDiv.innerHTML =
-            "<h3 style='color:green'>VALID CERTIFICATE</h3>" +
-            "<b>Name:</b> " + cert.name + "<br>" +
-            "<b>Date of Birth:</b> " + cert.d_o_b + "<br>" +
-            "<b>Place of Birth:</b> " + cert.p_o_b + "<br><br>" +
+fetch("certificates.json")
 
-            "<b>University:</b> " + cert.school + "<br>" +
-            "<b>Faculty:</b> " + cert.faculty + "<br>" +
-            "<b>Department:</b> " + cert.department + "<br>" +
+.then(response=>response.json())
 
-            "<b>Degree:</b> " + cert.degree + "<br>" +
-            "<b>Classification:</b> " + cert.grade + "<br>" +
+.then(data=>{
 
-            "<b>Graduation Year:</b> " + cert.graduation_year + "<br>" +
-            "<b>Date Awarded:</b> " + cert.effective_date_of_award;
+const cert=data[certID];
 
-        } else {
+if(cert){
 
-            resultDiv.innerHTML =
-            "<h3 style='color:red'>INVALID CERTIFICATE</h3>";
+resultDiv.innerHTML=`
 
-        }
+<div class="valid">✔ VERIFIED AUTHENTIC CERTIFICATE</div>
 
-    })
-    .catch(err => {
+<div class="cert-info">
 
-        console.error(err);
-        resultDiv.innerHTML = "Error loading certificate database.";
+<b>Name:</b> ${cert.name}<br>
 
-    });
+<b>Date of Birth:</b> ${cert.d_o_b}<br>
+
+<b>Place of Birth:</b> ${cert.p_o_b}<br><br>
+
+<b>University:</b> ${cert.school}<br>
+
+<b>Faculty:</b> ${cert.faculty}<br>
+
+<b>Department:</b> ${cert.department}<br>
+
+<b>Degree:</b> ${cert.degree}<br>
+
+<b>Classification:</b> ${cert.grade}<br>
+
+<b>Graduation Year:</b> ${cert.graduation_year}<br>
+
+<b>Date Awarded:</b> ${cert.effective_date_of_award}
+
+</div>
+
+`;
+
+}else{
+
+resultDiv.innerHTML='<div class="invalid">✖ INVALID CERTIFICATE</div>';
+
+}
+
+})
+
+.catch(err=>{
+
+console.error(err);
+
+resultDiv.innerHTML="Error loading certificate database.";
+
+});
+
+}
+
+
+// QR CODE AUTO VERIFICATION
+
+const params=new URLSearchParams(window.location.search);
+
+const certID=params.get("id");
+
+if(certID){
+
+document.getElementById("certInput").value=certID;
+
+verifyCertificate();
 
 }
 
 </script>
 
+
 </body>
 </html>
-
