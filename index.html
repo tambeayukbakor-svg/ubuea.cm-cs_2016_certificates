@@ -28,10 +28,19 @@ if(data[certID]){
 
 document.getElementById("result").innerHTML =
 "<h3 style='color:green'>VALID CERTIFICATE</h3>" +
-"Name: " + data[certID].name + "<br>" +
-"Program: " + data[certID].course + "<br>" +
-"Date: " + data[certID].date;
+"<b>Name:</b> " + data[certID].name + "<br>" +
+"<b>Date of Birth:</b> " + data[certID].d_o_b + "<br>" +
+"<b>Place of Birth:</b> " + data[certID].p_o_b + "<br><br>" +
 
+"<b>University:</b> " + data[certID].school + "<br>" +
+"<b>Faculty:</b> " + data[certID].faculty + "<br>" +
+"<b>Department:</b> " + data[certID].department + "<br>" +
+
+"<b>Degree:</b> " + data[certID].degree + "<br>" +
+"<b>Classification:</b> " + data[certID].grade + "<br>" +
+
+"<b>Graduation Year:</b> " + data[certID].graduation_year + "<br>" +
+"<b>Date Awarded:</b> " + data[certID].effective_date_of_award;
 }else{
 
 document.getElementById("result").innerHTML =
