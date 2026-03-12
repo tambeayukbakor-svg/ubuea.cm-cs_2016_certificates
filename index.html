@@ -25,7 +25,8 @@ fetch("certificates.json")
 .then(response => response.json())
 .then(data => {
 
-if(data[certID]){
+const cleanID = certID.trim();
+if(data[cleanID]){
 
 document.getElementById("result").innerHTML =
 "<h3 style='color:green'>VALID CERTIFICATE</h3>" +
